@@ -1,0 +1,11 @@
+helloworld: main.o helloworld.o
+	gcc -o target/helloworld main.o helloworld.o
+
+main.o: main.c
+	gcc -c main.c
+
+helloworld.o: helloworld.c helloworld.h
+	gcc -c helloworld.c
+
+clean:
+	rm -f *.o target/helloworld
