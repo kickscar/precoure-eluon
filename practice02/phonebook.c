@@ -39,7 +39,6 @@ void insert()
 	scanf("%s", arr_phone[cur_idx].name);
 	__fpurge(stdin);
 
-
 	fputs("전화번호:", stdout);
 	scanf("%s", arr_phone[cur_idx].tel);
 	__fpurge(stdin);
