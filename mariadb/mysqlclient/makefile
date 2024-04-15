@@ -8,10 +8,7 @@ TARGETS = $(TARGET_DIR)/test_conn $(TARGET_DIR)/test_insert $(TARGET_DIR)/test_d
 all: $(TARGETS)
 
 $(TARGETS): $(TARGET_DIR)/%: $(TARGET_DIR)/%.o
-	gcc $(LDFLAGS) -o $@ $^ 
-
-$(TARGET_DIR):
-	mkdir -p $@
+	gcc $(LDFLAGS) -o $@ $^
 	
 $(TARGET_DIR)/%.o: %.c
 	@ mkdir -p $(TARGET_DIR)
