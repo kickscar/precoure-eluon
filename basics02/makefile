@@ -12,5 +12,5 @@ $(TARGET_DIR)/%.o: %.c
 	@ mkdir -p $(TARGET_DIR)
 	gcc $(CFLAGS) -c -o $@ $^ 
 
-clean :
+clean:
 	rm -rf $(TARGET_DIR)

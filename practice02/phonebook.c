@@ -37,11 +37,12 @@ void insert()
 
 	fputs("이름:", stdout);
 	scanf("%s", arr_phone[cur_idx].name);
-	fflush(stdin);
+	__fpurge(stdin);
+
 
 	fputs("전화번호:", stdout);
 	scanf("%s", arr_phone[cur_idx].tel);
-	fflush(stdin);
+	__fpurge(stdin);
 
 	arr_phone[cur_idx].used = 1;
 
@@ -57,10 +58,9 @@ void del()
 
 	print_message("삭제");
 
-	fputs("이름", stdout);
+	fputs("이름:", stdout);
 	scanf("%s", name);
-	fflush(stdin);
-
+	__fpurge(stdin);
 
 	for(i = 0; i < cur_idx; i++)
 	{
@@ -88,7 +88,8 @@ void phonebook()
 	print_usage();
 
 	scanf("%c", &command); 
-	fflush(stdin);
+	__fpurge(stdin);
+
 
 	switch(command)
 	{
