@@ -3,7 +3,7 @@ CFLAGS = -Wall -O2
 INCLUDES = -I /usr/local/poscodx2023/mariadb/include/mysql
 LDFLAGS = -L /usr/local/poscodx2023/mariadb/lib -lmysqlclient
 TARGET_DIR = target
-TARGETS = $(TARGET_DIR)/test_conn
+TARGETS = $(TARGET_DIR)/test_conn $(TARGET_DIR)/test_insert $(TARGET_DIR)/test_delete $(TARGET_DIR)/test_select
 
 all: $(TARGETS)
 

@@ -2,8 +2,13 @@
 #include <stdlib.h>
 #include <mysql.h>
 
-int main()
+int main(int argc, char** argv)
 {
+    if(argc != 2) {
+        fputs("usage: test_delete name\n", stdout);
+        exit(0);
+    }
+
     // initialize connection
     MYSQL* conn = NULL;
     
@@ -31,7 +36,17 @@ int main()
         exit(1);
     }
 
-    printf("Connection Success\n");
+
+    // execute SQL
+    char sql[200];
+    sprintf(sql, "delete from phonebook where name = '%s'", *(argv+1));
+
+    if(mysql_query(conn, sql))
+    {
+        fprintf(stderr, "Error connecting to Server: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        exit(1);   
+    }
 
     // close connection
     mysql_close(conn);

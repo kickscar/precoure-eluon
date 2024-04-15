@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "phonebook.h"
-
-phone* head;
+#include "phonebookdb.h"
 
 void print_message(char* message)
 {
@@ -21,43 +19,32 @@ void list()
 {
 	print_message("전체항목");
 
-	phone* it = head;
-	int idx = 1;
-	while(it->next != NULL)
+	phone* phones = NULL;
+	
+	int cnt = phonebookdb_fetch_all(&phones);
+	for(int i = 0; i < cnt; i++)
 	{
-        printf("[%d] 이름:%s, 전화번호:%s \n", idx++, it->next->name, it->next->tel );
-		it = it->next;
+		printf("[%d] 이름:%s, 전화번호:%s \n", cnt-i, (phones+i)->name, (phones+i)->tel);
 	}
+
+	free(phones);
 }
 
 void insert()
 {
 	print_message("추가하기");
 
-	char name[100];
-	char tel[100];
+	phone new_phone;
 
 	fputs("이름: ", stdout);
-	scanf("%s", name);
+	scanf("%s", new_phone.name);
 	__fpurge(stdin);
 
 	fputs("전화번호: ", stdout);
-	scanf("%s", tel);
+	scanf("%s", new_phone.tel);
 	__fpurge(stdin);
 
-	phone* find = head;
-	while(find->next != NULL)
-	{
-		find = find->next;
-	}
-
-	phone* temp = (phone*)malloc(sizeof(phone));
-	strcpy(temp->name, name);
-	strcpy(temp->tel, tel);
-	
-	find->next = temp;
-	temp->next = NULL;
-
+	phonebookdb_insert(&new_phone);
 	print_message("성공적으로 추가되었습니다.");
 }
 
@@ -70,27 +57,7 @@ void del()
 	scanf("%s", name);
 	__fpurge(stdin);
 
-	phone* find = head;
-	while(find->next != NULL)
-	{
-		if( strcmp(find->next->name, name) == 0)
-		{
-			break;
-		}
-
-		find = find->next;
-	}
-
-	if( find->next != NULL )
-	{
-		phone* temp = find->next->next;
-		free(find->next);
-		find->next = temp;
-	}
-	else
-	{
-		print_message("삭제 대상이 없음");
-	}
+	phonebookdb_delete_by_name(name);
 }
 
 void quit()
@@ -100,9 +67,6 @@ void quit()
 
 void phonebook()
 {
-	head = (phone*)malloc(sizeof(phone));
-	head->next = NULL;
-
 	while(1)
 	{
 		char command;

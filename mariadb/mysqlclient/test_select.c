@@ -2,13 +2,8 @@
 #include <stdlib.h>
 #include <mysql.h>
 
-int main(int argc, char** argv)
+int main()
 {
-    if(argc != 3) {
-        fputs("usage: test_insert name tel\n", stdout);
-        exit(0);
-    }
-
     // initialize connection
     MYSQL* conn = NULL;
     
@@ -36,17 +31,47 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-
     // execute SQL
-    char sql[200];
-    sprintf(sql, "insert into phonebook values(null, '%s', '%s')", argv[1], argv[2]);
-    
+    char* sql = "select no, name, tel from phonebook";
     if(mysql_query(conn, sql))
     {
         fprintf(stderr, "Error connecting to Server: %s\n", mysql_error(conn));
         mysql_close(conn);
         exit(1);
     }
+
+    MYSQL_RES* result = mysql_store_result(conn);
+    if(result == NULL)
+    {
+        fprintf(stderr, "Error connecting to Server: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        exit(1);
+    }
+
+    // fetch row
+    int num_fields = mysql_num_fields(result);
+
+    // MYSQL_ROW row;
+    // while((row = mysql_fetch_row(result)))
+    // {
+    //     for(int i = 0; i < num_fields; i++)
+    //     {
+    //         printf("%s ", row[i] ? row[i] : "NULL");
+    //     }
+    //     printf("\n");
+    // }
+
+    int num_rows = mysql_num_rows(result);
+    for(int i = 0; i < num_rows; i++)
+    {
+        MYSQL_ROW row = mysql_fetch_row(result);
+        for(int j = 0; j < num_fields; j++)
+        {
+            printf("%s ", row[j] ? row[j] : "NULL");
+        }
+        printf("\n");   
+    }
+    mysql_free_result(result);
 
     // close connection
     mysql_close(conn);
